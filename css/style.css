@@ -1,0 +1,37 @@
+body{
+    width: 100%;
+    height: 100%;
+}
+
+.table{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.field{
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+    background: #CCC;
+    cursor: pointer;
+}
+
+.field:hover{
+    background: #80BDCC;
+}
+
+.resolute, .resolute:hover{
+    background: url('../img/flag.png') no-repeat 5px;
+}
+
+.bomb, .bomb:hover{
+    background: red url('../img/bomb.png') no-repeat 5px;
+}
+
+.label{
+    float: left;
+}
+
+#ostatok{
+    margin-left: 5px;
+}

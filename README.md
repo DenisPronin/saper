@@ -1,4 +1,3 @@
-indus'ище
-=====
-
 saper
+=====
+Моя игра на javascript.
