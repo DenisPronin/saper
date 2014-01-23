@@ -11,6 +11,7 @@ document.oncontextmenu = function(){return false};
 
 $(document).ready(function(){
     initDefaults();
+    createUI();
 });
 
 function initDefaults() {
@@ -19,11 +20,14 @@ function initDefaults() {
         row_count: 15,
         bomba_count: 25
     };
+}
 
+function createUI(){
     createGameTable();
     createBombs();
     createNumbers();
     initHandlers();
+    setBalance(game_params.bomba_count);
 }
 
 function createGameTable() {
@@ -116,14 +120,32 @@ var MOUSE_SCROLL_BUTTON = 2;
 var MOUSE_RIGHT_BUTTON = 3;
 
 var flagged_bombs = 0;
+
+var twoButtons = false;
+var super_open = false;
+
 function initHandlers(){
-    $('#gameTable').mousedown(function(e){
+    var table = $('#gameTable');
+
+    table.mousedown(function(e){
+        if (twoButtons) {
+            twoButtons = false;
+            super_open = true;
+            var block = $(e.target);
+            superOpener(block);
+        } else {
+            twoButtons = true;
+        }
+    });
+
+    table.mouseup(function(e){
         var block = $(e.target);
-        if(!block.hasClass('clicked')) {
+        twoButtons = false;
+        if(!block.hasClass('clicked') && !super_open) {
             var params = getParams(e.target.id);
             var row_id = params.row;
             var col_id = params.col;
-            if(e.which == MOUSE_LEFT_BUTTON || e.isTrigger){
+            if((e.which == MOUSE_LEFT_BUTTON || e.isTrigger) && !block.hasClass('resolute')){
                 if(isBomb($(e.target))){
                     gameEnd();
                 }
@@ -139,13 +161,14 @@ function initHandlers(){
                 else{
                     flagged_bombs--;
                 }
-                var ostatok = game_params.bomba_count - flagged_bombs;
-                $('#ostatok').empty().append(ostatok);
-                if(ostatok == 0){
+                var balance = game_params.bomba_count - flagged_bombs;
+                setBalance(balance);
+                if(balance == 0){
                     win();
                 }
             }
         }
+        super_open = false;
     });
 }
 
@@ -189,7 +212,8 @@ function showNumberBombsAround(row_id, col_id){
 }
 
 function gameEnd(){
-    $('#gameTable').find('td').each(function(){
+    var table = $('#gameTable');
+    table.find('td').each(function(){
         if(isBomb($(this))){
             $(this).addClass('bomb');
         }
@@ -197,16 +221,17 @@ function gameEnd(){
             $(this).trigger('mousedown');
         }
     });
-    $('#gameTable').unbind('mousedown');
+    table.unbind('mousedown');
 }
 
 function win(){
-    $('#gameTable').find('td').each(function(){
+    var table = $('#gameTable');
+    table.find('td').each(function(){
         if(!isBomb($(this))){
             $(this).trigger('mousedown');
         }
     });
-    $('#gameTable').unbind('mousedown');
+    table.unbind('mousedown');
 }
 
 function isBomb(block){
@@ -220,3 +245,34 @@ function getParams(id){
     return {row: row_id, col: col_id};
 }
 
+function setBalance(balance){
+    $('#balance').empty().append(balance);
+}
+
+function superOpener(block){
+    if(block.hasClass('clicked')) {
+        var id = block.attr('id');
+        var coords = getParams(id);
+        var row = coords.row_id;
+        var col = coords.col_id;
+        var number_bomb = getNumber(row, col);
+        var around_fields = getFieldsAround(row, col);
+        console.log(around_fields);
+    }
+}
+
+function getFieldsAround(row_id, col_id){
+    var fields = [];
+    for(var i=row_id-1; i<row_id+2; i++){
+        var tek_row = i;
+        if(tek_row > 0 && tek_row < game_params.row_count +1){
+            for(var j=col_id-1; j<col_id+2; j++){
+                var tek_col = j;
+                if(tek_col > 0 && tek_col < game_params.column_count +1){
+                    var field = $("#col_" + (tek_row) + "_" + (tek_col));
+                    fields.push(field);
+                }
+            }
+        }
+    }
+}
