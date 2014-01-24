@@ -18,7 +18,7 @@ function initDefaults() {
     game_params = {
         column_count: 15,
         row_count: 15,
-        bomba_count: 25
+        bomba_count: 30
     };
 }
 
@@ -83,7 +83,13 @@ function createNumbers(){
 }
 
 function getNumber(row_id, col_id){
-    return parseInt($('#col_' + row_id + '_' + col_id).data('number'));
+    var number = $('#col_' + row_id + '_' + col_id).data('number');
+    if(number){
+        return parseInt(number);
+    }
+    else{
+        return null;
+    }
 }
 
 function checkRowFilling(num_row){
@@ -124,52 +130,70 @@ var flagged_bombs = 0;
 var twoButtons = false;
 var super_open = false;
 
+var left = false;
+var right = false;
+
 function initHandlers(){
     var table = $('#gameTable');
 
     table.mousedown(function(e){
-        if (twoButtons) {
-            twoButtons = false;
-            super_open = true;
-            var block = $(e.target);
-            superOpener(block);
-        } else {
-            twoButtons = true;
+        if(e.which == MOUSE_LEFT_BUTTON || e.isTrigger){
+            left = true;
         }
+        if(e.which == MOUSE_RIGHT_BUTTON){
+            right = true;
+        }
+    }).mouseup(function(e){
+        window.setTimeout(function(){
+            handler(e);
+        }, 100);
     });
+}
 
-    table.mouseup(function(e){
-        var block = $(e.target);
-        twoButtons = false;
-        if(!block.hasClass('clicked') && !super_open) {
-            var params = getParams(e.target.id);
+function handler(e){
+    var block = $(e.target);
+    if(left && right){
+        togetherHandler(block);
+    }
+    else if(left){
+        leftHandler(block);
+    }
+    else if(right){
+        rightHandler(block);
+    }
+    left = false;
+    right = false;
+}
+
+function leftHandler($field){
+    if(!$field.hasClass('clicked')){
+        if(isBomb($field)){
+            gameEnd();
+        }
+        else{
+            var params = getParams($field.attr('id'));
             var row_id = params.row;
             var col_id = params.col;
-            if((e.which == MOUSE_LEFT_BUTTON || e.isTrigger) && !block.hasClass('resolute')){
-                if(isBomb($(e.target))){
-                    gameEnd();
-                }
-                else{
-                    showNumberBombsAround(row_id, col_id);
-                }
-            }
-            else if(e.which == MOUSE_RIGHT_BUTTON){
-                block.toggleClass('resolute');
-                if(block.hasClass('resolute')){
-                    flagged_bombs++;
-                }
-                else{
-                    flagged_bombs--;
-                }
-                var balance = game_params.bomba_count - flagged_bombs;
-                setBalance(balance);
-                if(balance == 0){
-                    win();
-                }
-            }
+            showNumberBombsAround(row_id, col_id);
         }
-        super_open = false;
-    });
+    }
+}
+
+function rightHandler($field){
+    if(!$field.hasClass('clicked')){
+        $field.toggleClass('resolute');
+        if($field.hasClass('resolute')){
+            flagged_bombs++;
+        }
+        else{
+            flagged_bombs--;
+        }
+        var balance = game_params.bomba_count - flagged_bombs;
+        setBalance(balance);
+        if(balance == 0){
+            win();
+        }
+    }
 }
 
 var checking_fields = [];
@@ -218,7 +242,7 @@ function gameEnd(){
             $(this).addClass('bomb');
         }
         else{
-            $(this).trigger('mousedown');
+            leftHandler($(this));
         }
     });
     table.unbind('mousedown');
@@ -228,10 +252,11 @@ function win(){
     var table = $('#gameTable');
     table.find('td').each(function(){
         if(!isBomb($(this))){
-            $(this).trigger('mousedown');
+            leftHandler(this);
         }
     });
     table.unbind('mousedown');
+    alert('WIN!!!');
 }
 
 function isBomb(block){
@@ -249,15 +274,42 @@ function setBalance(balance){
     $('#balance').empty().append(balance);
 }
 
+function togetherHandler($field){
+    superOpener($field);
+}
+
 function superOpener(block){
     if(block.hasClass('clicked')) {
         var id = block.attr('id');
         var coords = getParams(id);
-        var row = coords.row_id;
-        var col = coords.col_id;
+        var row = coords.row;
+        var col = coords.col;
         var number_bomb = getNumber(row, col);
-        var around_fields = getFieldsAround(row, col);
-        console.log(around_fields);
+        if(number_bomb){
+            var around_fields = getFieldsAround(row, col);
+            var empty_fields = [];
+            var resolute_fields = [];
+            for(var i=0; i < around_fields.length; i++){
+                var field = around_fields[i];
+                if(!field.hasClass('clicked') && !field.hasClass('resolute')){
+                    empty_fields.push(field);
+                }
+                else if(field.hasClass('resolute')){
+                    resolute_fields.push(field);
+                }
+            }
+//            Todo: сделать hover ячеек
+//            for(var j=0; j < empty_fields.length; j++){
+//                empty_fields[j].hover();
+//            }
+
+            if(number_bomb === resolute_fields.length){
+                for(var j=0; j < empty_fields.length; j++){
+                    var empty_coord = getParams(empty_fields[j].attr('id'));
+                    showNumberBombsAround(empty_coord.row, empty_coord.col);
+                }
+            }
+        }
     }
 }
 
@@ -275,4 +327,5 @@ function getFieldsAround(row_id, col_id){
             }
         }
     }
+    return fields;
 }
