@@ -9,10 +9,10 @@
 var game_params = {};
 document.oncontextmenu = function(){return false};
 
-$(document).ready(function(){
-    initDefaults();
-    createUI();
-});
+//$(document).ready(function(){
+//    initDefaults();
+//    createUI();
+//});
 
 function initDefaults() {
     game_params = {
