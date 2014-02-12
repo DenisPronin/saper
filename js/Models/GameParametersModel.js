@@ -4,9 +4,13 @@
 
 define(function(){
 
+    var default_parameters = {
+        column_count: 3,
+        row_count: 3,
+        bombs_count: 5
+    };
+
     return {
-        column_count: 15,
-        row_count: 15,
-        bombs_count: 30
+        default_parameters: default_parameters
     }
 });
