@@ -6,6 +6,6 @@ requirejs.config({
 });
 
 
-require(['jquery'], function($){
-    $('#gameBlock').append('123');
+require(['jquery', 'Models/GameInfoModel'], function($, GameInfoModel){
+    GameInfoModel();
 });

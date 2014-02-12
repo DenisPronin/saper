@@ -18,7 +18,7 @@ function initDefaults() {
     game_params = {
         column_count: 15,
         row_count: 15,
-        bomba_count: 30
+        bombs_count: 30
     };
 }
 
@@ -27,7 +27,7 @@ function createUI(){
     createBombs();
     createNumbers();
     initHandlers();
-    setBalance(game_params.bomba_count);
+    setBalance(game_params.bombs_count);
 }
 
 function createGameTable() {
@@ -44,7 +44,7 @@ function createGameTable() {
 }
 
 function createBombs(){
-    for(var i=0; i < game_params.bomba_count; i++){
+    for(var i=0; i < game_params.bombs_count; i++){
         var sel_row = false;
         var num_row = 0;
         while(!sel_row){
@@ -188,7 +188,7 @@ function rightHandler($field){
         else{
             flagged_bombs--;
         }
-        var balance = game_params.bomba_count - flagged_bombs;
+        var balance = game_params.bombs_count - flagged_bombs;
         setBalance(balance);
         if(balance == 0){
             win();
