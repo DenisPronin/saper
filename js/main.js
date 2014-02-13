@@ -14,6 +14,7 @@ document.oncontextmenu = function(){return false};
 //    createUI();
 //});
 
+/*
 function initDefaults() {
     game_params = {
         column_count: 15,
@@ -21,6 +22,7 @@ function initDefaults() {
         bombs_count: 30
     };
 }
+*/
 
 function createUI(){
     createGameTable();
@@ -30,6 +32,7 @@ function createUI(){
     setBalance(game_params.bombs_count);
 }
 
+/*
 function createGameTable() {
     var table = $('#gameTable');
     var sem = '';
@@ -42,7 +45,9 @@ function createGameTable() {
     }
     table.append(sem);
 }
+*/
 
+/*
 function createBombs(){
     for(var i=0; i < game_params.bombs_count; i++){
         var sel_row = false;
@@ -68,7 +73,9 @@ function createBombs(){
         }
     }
 }
+*/
 
+/*
 function createNumbers(){
     var table = $('#gameTable');
     table.find('td').each(function(){
@@ -81,17 +88,9 @@ function createNumbers(){
     });
 
 }
+*/
 
-function getNumber(row_id, col_id){
-    var number = $('#col_' + row_id + '_' + col_id).data('number');
-    if(number){
-        return parseInt(number);
-    }
-    else{
-        return null;
-    }
-}
-
+/*
 function checkRowFilling(num_row){
     var row_block = $('#row_' + num_row);
     var count = 0;
@@ -105,7 +104,9 @@ function checkRowFilling(num_row){
         row_block.data('filling');
     }
 }
+*/
 
+/*
 function simplyCalcNumberBombsAround(row_id, col_id){
     var bomb_count = 0;
     var current_block = $("#col_" + (row_id) + "_" + (col_id));
@@ -120,6 +121,7 @@ function simplyCalcNumberBombsAround(row_id, col_id){
     }
     current_block.data('number', bomb_count);
 }
+*/
 
 var MOUSE_LEFT_BUTTON = 1;
 var MOUSE_SCROLL_BUTTON = 2;
@@ -133,6 +135,17 @@ var super_open = false;
 var left = false;
 var right = false;
 
+function getNumber(row_id, col_id){
+    var number = $('#col_' + row_id + '_' + col_id).data('number');
+    if(number){
+        return parseInt(number);
+    }
+    else{
+        return null;
+    }
+}
+
+/*
 function initHandlers(){
     var table = $('#gameTable');
 
@@ -164,6 +177,7 @@ function handler(e){
     left = false;
     right = false;
 }
+*/
 
 function leftHandler($field){
     if(!$field.hasClass('clicked')){
@@ -263,12 +277,14 @@ function isBomb(block){
     return $(block).data('filling');
 }
 
+/*
 function getParams(id){
     var params = id.split('_');
     var row_id = parseInt(params[1]);
     var col_id = parseInt(params[2]);
     return {row: row_id, col: col_id};
 }
+*/
 
 function setBalance(balance){
     $('#balance').empty().append(balance);

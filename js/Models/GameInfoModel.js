@@ -5,7 +5,7 @@
 define(['GameParameters'], function(GameParameters){
 
     var game_info_object = [];
-    var parameters = GameParameters.default_parameters;
+    var parameters = getGameParameters();
 
     function createInfo(){
         createEmptyModel();
@@ -105,9 +105,15 @@ define(['GameParameters'], function(GameParameters){
         return game_info_object[numRow][numCol].data;
     }
 
+    function getGameParameters(){
+        return GameParameters.default_parameters;
+    }
+
     return {
         createInfo: createInfo,
-        model: game_info_object
+        getGameParameters: getGameParameters,
+        getFieldData: getFieldData,
+        setFieldData: setFieldData
     };
 
 });

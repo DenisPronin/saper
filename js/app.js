@@ -7,7 +7,7 @@ requirejs.config({
 });
 
 
-require(['jquery', 'Models/GameInfoModel'], function($, GameInfoModel){
+require(['jquery', 'Models/GameInfoModel', 'Views/GameFieldView'], function($, GameInfoModel, GameView){
     GameInfoModel.createInfo();
-    console.log(GameInfoModel.model);
+    GameView.createView();
 });
