@@ -5,9 +5,9 @@
 define(function(){
 
     var default_parameters = {
-        column_count: 3,
-        row_count: 3,
-        bombs_count: 5
+        column_count: 30,
+        row_count: 16,
+        bombs_count: 99
     };
 
     return {

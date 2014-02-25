@@ -16,7 +16,7 @@ body{
     cursor: pointer;
 }
 
-.field:hover{
+.field:hover, .hovered{
     background: #80BDCC;
 }
 
@@ -28,11 +28,3 @@ body{
     background: red url('../img/bomb.png') no-repeat 5px!important;
 }
 
-.label{
-    float: left;
-}
-
-#balance {
-    margin-left: 5px;
-  float: left;
-}

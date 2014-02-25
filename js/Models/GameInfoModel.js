@@ -5,6 +5,7 @@
 define(['GameParameters'], function(GameParameters){
 
     var game_info_object = [];
+    var bombs_array = [];
     var parameters = getGameParameters();
 
     function createInfo(){
@@ -41,6 +42,7 @@ define(['GameParameters'], function(GameParameters){
                 }
             }
             setFieldData(coords.numRow, coords.numCol, 'bomb');
+            setBombsCoords(coords.numRow, coords.numCol);
         }
     }
 
@@ -105,6 +107,14 @@ define(['GameParameters'], function(GameParameters){
         return game_info_object[numRow][numCol].data;
     }
 
+    function setBombsCoords(numRow, numCol){
+        bombs_array.push({row: numRow, col: numCol});
+    }
+
+    function getBombsCoords(){
+        return bombs_array;
+    }
+
     function getGameParameters(){
         return GameParameters.default_parameters;
     }
@@ -113,7 +123,8 @@ define(['GameParameters'], function(GameParameters){
         createInfo: createInfo,
         getGameParameters: getGameParameters,
         getFieldData: getFieldData,
-        setFieldData: setFieldData
+        setFieldData: setFieldData,
+        getBombsCoords: getBombsCoords
     };
 
 });
