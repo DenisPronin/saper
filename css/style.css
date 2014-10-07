@@ -17,11 +17,11 @@ body{
 }
 
 .green_field{
-    background: green;
+    background: green!important;
 }
 
 .white_field{
-    background: white;
+    background: white!important;
 }
 
 .field:hover, .hovered{
