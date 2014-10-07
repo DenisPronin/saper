@@ -16,6 +16,14 @@ body{
     cursor: pointer;
 }
 
+.green_field{
+    background: green;
+}
+
+.white_field{
+    background: white;
+}
+
 .field:hover, .hovered{
     background: #80BDCC;
 }

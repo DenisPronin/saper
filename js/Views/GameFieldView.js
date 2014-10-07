@@ -219,7 +219,7 @@ define(['jquery', 'Controllers/GameController'], function($, GameController){
 
     function showNumbersAround($field){
         if(!$field.hasClass('clicked')){
-            $field.css('background', 'white').addClass('clicked');
+            $field.addClass('white_field clicked');
         }
         var coord = getCoordFormFieldBlock($field);
         var numRow = coord.row;
@@ -237,7 +237,7 @@ define(['jquery', 'Controllers/GameController'], function($, GameController){
     }
 
     function setViewFieldNumber($field, number){
-        $field.text(number).css('background', 'green').addClass('clicked');
+        $field.text(number).addClass('green_field clicked');
     }
 
     function gameOver(){
